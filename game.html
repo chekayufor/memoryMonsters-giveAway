@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>My App</title>
+  <link rel="stylesheet" href="css/game.css" />
+</head>
+
+<body>
+  <div class="header">
+      <a href='index.html'><button class='back-home'>Back to Home</button></a>
+    <img src="img/layout/logo.png">
+    <h1>Memory Monsters</h1>
+  </div>
+  <div class='game-field'>
+    <div id='greeting'>
+        <button class='greet-b'>Let's play</button>
+        <h2></h2>
+        <button id='start' onclick="startToPlay()" >Start</button>
+    </div>
+    <div id='time-display'>0:0:0</div>
+    <h2 class = 'best-time'></h2>
+
+    <div id='card-game'>
+      <div class="card" data-card="1" onclick="cardClicked(this)">
+        <img src="img/cards/1.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="7" onclick="cardClicked(this)">
+        <img src="img/cards/7.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="1" onclick="cardClicked(this)">
+        <img src="img/cards/1.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="7" onclick="cardClicked(this)">
+        <img src="img/cards/7.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="5" onclick="cardClicked(this)">
+        <img src="img/cards/5.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="5" onclick="cardClicked(this)">
+        <img src="img/cards/5.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="2" onclick="cardClicked(this)">
+        <img src="img/cards/2.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="6" onclick="cardClicked(this)">
+        <img src="img/cards/6.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="3" onclick="cardClicked(this)">
+        <img src="img/cards/3.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="6" onclick="cardClicked(this)">
+        <img src="img/cards/6.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="2" onclick="cardClicked(this)">
+        <img src="img/cards/2.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+      <div class="card" data-card="3" onclick="cardClicked(this)">
+        <img src="img/cards/3.png">
+        <img class="back" src="img/cards/back.png">
+      </div>
+    </div>
+  </div>
+  <script src="js/game.js"></script>
+</body>
+
+</html>

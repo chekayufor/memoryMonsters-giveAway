@@ -1,0 +1,115 @@
+.header {
+    background-color: lightblue;
+    padding: 20px;
+    border-bottom: 10px solid darkcyan;
+    color:darkcyan;
+    font-size: 1.5em;
+    text-align: center;
+}
+.back-home {
+    width: 120px;
+    height: 40px;
+    border: 3px solid rgb(54, 85, 142);
+    border-radius: 5px;
+    background: rgb(54, 85, 142);
+    font-size: 14px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    box-shadow: 0 3px 0 #22303d;
+    float: left;
+}
+a .back-home {
+    text-decoration: none;
+    color: white;
+
+}
+.header img {
+    float:right;
+}
+.game-field {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    background: rgb(230, 227, 227);
+    align-items: center;
+    justify-content: space-around;
+}
+#greeting {
+    margin: 10px 0;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    align-content: space-around;
+}
+#greeting h2{
+    visibility: hidden; 
+    font-family: fantasy;
+    color: rgb(54, 85, 142);
+    transition: 0.4 linear all;
+}
+#start {
+    visibility: hidden; 
+    font-family: fantasy;
+    width: 120px;
+    height: 40px;
+    border: 3px solid rgb(134, 37, 91);
+    border-radius: 5px;
+    background: rgb(134, 37, 91);
+    box-shadow: 0 3px 0 #22303d;
+    color: white;
+    font-size: 14px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    float: left;
+    transition: 0.4 linear all;
+}
+.greet-b {
+    width: 170px;
+    height: 50px;
+    border: 3px solid rgb(54, 85, 142);
+    border-radius: 5px;
+    background: rgb(54, 85, 142);
+    color: white;
+    font-size: 18px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    box-shadow: 0 3px 0 #22303d;
+}
+#time-display {
+    visibility: hidden; 
+    font-family: fantasy;
+    font-size: 32px;
+    font-weight: bolder;
+    color: rgb(54, 85, 142);
+    transition: 0.4 linear all;
+}
+#card-game {
+    visibility: hidden;
+    margin: 10px 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 720px;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    background: rgb(54, 85, 142);
+    justify-content: center;
+
+}
+.card {
+    background-color: pink;
+    margin: 5px;
+    height: 165px;
+    width: 165px;    
+    float: left;
+}
+.card img {
+    position: absolute;
+}
+
+.flipped .back {
+    display: none;
+}
