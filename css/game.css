@@ -66,6 +66,22 @@ a .back-home {
     float: left;
     transition: 0.4 linear all;
 }
+#review {
+    visibility: hidden; 
+    font-family: fantasy;
+    width: 120px;
+    height: 40px;
+    border: 3px solid rgb(89, 71, 81);
+    border-radius: 5px;
+    background: rgb(89, 71, 81);
+    box-shadow: 0 3px 0 #22303d;
+    color: white;
+    font-size: 14px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    float: left;
+    transition: 0.4 linear all;
+}
 .greet-b {
     width: 170px;
     height: 50px;
@@ -112,4 +128,7 @@ a .back-home {
 
 .flipped .back {
     display: none;
+}
+.revers {
+    box-shadow: 0 3px 0 #22303d;
 }

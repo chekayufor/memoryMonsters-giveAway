@@ -9,6 +9,10 @@ var timeDisplayCaption = document.querySelector('#time-display');
 var firstCardClickTime;
 var showGameTimeInterval;
 var gameTime;
+var allCards = document.querySelectorAll('.card');
+var firstClickOnReview = true;
+var reviewTimeInterval;
+var checkReviewSecondClickTimeout;
 
 // This is a constant that we dont change during the game (we mark those with CAPITAL letters)
 var TOTAL_COUPLES_COUNT = 6;
@@ -22,23 +26,25 @@ var audioRight= new Audio('sound/right.mp3');
 var myButton = document.querySelector('.greet-b');
 var myHeading = document.querySelector('#greeting h2');
 var startButton = document.querySelector('#start');
+var reviewButton = document.querySelector('#review');
 
 
 function setUserName() {
     var myName = prompt('Please enter your name.');
+    var storedName = localStorage.getItem('name');
     localStorage.setItem('name', myName);
     myHeading.textContent = "Let's play, " + myName + "!";
     myHeading.style.visibility = 'visible'; 
     myButton.textContent = 'Change name';
     startButton.style.visibility = 'visible';
-  }
 
-  var storedName = localStorage.getItem('name');
-  if(storedName === null) {
-    setUserName();
-  } else {
-    myHeading.textContent="Lets play, " + storedName + "!";
-  }
+    if(storedName === null) {
+        setUserName();
+    } else {
+        myHeading.textContent="Lets play, " + storedName + "!";
+    }
+}
+  
   myButton.onclick = function() {
     setUserName();
   }
@@ -74,7 +80,7 @@ function showBestTime() {
             document.querySelector('.best-time').innerHTML =  ("Your best time is " + formatMSecToTimeStr(storedGameTime));
         } else {
             storeGameTime();
-            document.querySelector('.best-time').innerHTML =  ("Your best time is " + gameTformatMSecToTimeStr(gameTime));
+            document.querySelector('.best-time').innerHTML =  ("Your best time is " + formatMSecToTimeStr(gameTime));
             alert("Congratulation! New game record!! ");
         }
     }
@@ -93,7 +99,8 @@ function startToPlay() {
     if(gameOver === false) {                        
        console.log(gameOver + " start to play");
        cardGameField.style.visibility = 'visible'; // first time see the cardGameField 
-       startButton.textContent = 'Play Again';     // change the button's name  
+       startButton.textContent = 'Play Again';     // change the button's name 
+       reviewButton.style.visibility = 'visible';  // button review to show ++++++++++
     } else {
         gameOver = false;                          
         console.log(2);
@@ -101,7 +108,7 @@ function startToPlay() {
         // Cover all the cards
         for (var i = 0; i < flippedCard.length; ++i) {
             flippedCard[i].classList.remove('flipped');
-            console.log(flippedCard[i]);
+            // console.log(flippedCard[i]);
         }
         mixCards();
         timeDisplayCaption.innerHTML = ('0:0:0');
@@ -109,8 +116,73 @@ function startToPlay() {
         flippedCouplesCount = 0;
     }
 } 
+
 startButton.onclick = function() {
     startToPlay();
+}
+
+// make sure to flip cards if the user did not in 3000 sec
+
+function checkReviewSecondClick(){
+    if(firstClickOnReview === false){
+        reviewAllCards();
+    }
+    checkReviewSecondClickTimeout = null;
+}
+
+//Review the cards
+
+function reviewAllCards() { 
+
+    // if the button timeout is in effect - cancel it as the user clicked the button himself
+    if (checkReviewSecondClickTimeout !== null) {
+        clearTimeout(checkReviewSecondClickTimeout);
+    }
+
+    // wait for the processing timeout if the user just clicked the second card
+    if(isProcessing){
+        console.log('Clicked Review while processing ' + isProcessing);
+        return;
+    }
+
+    if(firstClickOnReview){
+        reviewButton.textContent = 'Hide';     // change the button's name          
+        var flippedCard = document.querySelectorAll('.flipped');
+        // add class revers
+        for (var i = 0; i < flippedCard.length; ++i) {
+            flippedCard[i].classList.add('revers');
+        }
+        // Uncover all the cards
+        for (var i = 0; i < allCards.length; ++i) {   
+            //add class flipped to allCards
+            allCards[i].classList.add('flipped');
+            console.log(allCards[i]);
+        }
+        firstClickOnReview = false;
+        checkReviewSecondClickTimeout = setTimeout(checkReviewSecondClick, 3000);  // make sure to flip cards if the user did not in 3000 sec
+    } else {
+        reviewButton.textContent = 'Review';     // change the button's name  
+        firstClickOnReview = true;
+        var flippedCard = document.querySelectorAll('.flipped');
+        // Cover all the cards
+        for (var i = 0; i < flippedCard.length; ++i) {
+            flippedCard[i].classList.remove('flipped');
+        }
+        var reversCard = document.querySelectorAll('.revers');
+
+        for (var i = 0; i < reversCard.length; ++i) {
+            reversCard[i].classList.add('flipped');
+        }
+        for (var i = 0; i < allCards.length; ++i) {   
+            allCards[i].classList.remove('revers');
+            console.log(allCards[i]);
+
+        }
+    }
+}  
+
+reviewButton.onclick = function() {
+    reviewAllCards();
 }
 
 // This function is called whenever the user click a card
@@ -135,9 +207,11 @@ function cardClicked(elCard) {
     if (elCard.classList.contains('flipped')) {
         return;
     }
+
     // Flip it
     elCard.classList.add('flipped');
-    // This is a first card, only keep it in the global variable
+
+    // If this is the first card, only keep it in the global variable
     if (elPreviousCard === null) {
         elPreviousCard = elCard;
     } else {
@@ -147,9 +221,7 @@ function cardClicked(elCard) {
 
         // No match, schedule to flip them back in 1 second
         if (card1 !== card2){
-            setTimeout(function(){
-                audioWrong.play();
-            }, 100);
+            audioWrong.play();
             isProcessing = true;
             console.log('this is Processing');
             setTimeout(function(){
@@ -184,5 +256,3 @@ function cardClicked(elCard) {
     }
 
 }
-
-
