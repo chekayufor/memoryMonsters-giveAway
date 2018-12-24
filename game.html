@@ -17,13 +17,15 @@
     <div id='greeting'>
         <button class='greet-b'>Let's play</button>
         <h2></h2>
-        <button id='start' onclick="startToPlay()" >Start</button>
+        <button id='start' onclick="changeUserName()" >Start</button>
     </div>
     <div id='time-display'>0:0:0</div>
     <h2 class = 'best-time'></h2>
     <div>
       <button id='review' onclick='reviewAllCards()'> Review</button>
+      <button id='similar' onclick='similarCard()'> Similar</button>
     </div>
+    
     <div id='card-game'>
       <div class="card" data-card="1" onclick="cardClicked(this)">
         <img src="img/cards/1.png">

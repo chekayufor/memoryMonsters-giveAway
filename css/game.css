@@ -82,6 +82,24 @@ a .back-home {
     float: left;
     transition: 0.4 linear all;
 }
+#similar {
+    visibility: hidden; 
+    font-family: fantasy;
+    width: 120px;
+    height: 40px;
+    border: 3px solid #22303d;;
+    border-radius: 5px;
+    background: rgb(15, 72, 21);
+    box-shadow: 0 3px 0 #22303d;
+    color: white;
+    font-size: 14px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    float: left;
+    transition: 0.4 linear all;
+    margin-left: 10px;
+}
+
 .greet-b {
     width: 170px;
     height: 50px;

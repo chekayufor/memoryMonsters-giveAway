@@ -14,6 +14,8 @@ var firstClickOnReview = true;
 var reviewTimeInterval;
 var checkReviewSecondClickTimeout;
 
+
+
 // This is a constant that we dont change during the game (we mark those with CAPITAL letters)
 var TOTAL_COUPLES_COUNT = 6;
 // Load an audio file
@@ -27,27 +29,44 @@ var myButton = document.querySelector('.greet-b');
 var myHeading = document.querySelector('#greeting h2');
 var startButton = document.querySelector('#start');
 var reviewButton = document.querySelector('#review');
+var similarButton = document.querySelector('#similar');
 
 
 function setUserName() {
-    var myName = prompt('Please enter your name.');
-    var storedName = localStorage.getItem('name');
-    localStorage.setItem('name', myName);
-    myHeading.textContent = "Let's play, " + myName + "!";
+    console.log('Entered setUserName');
+    var storedName = localStorage.getItem('name');  
+    console.log('Stored name is: ' + storedName);
+    if((storedName !== null) && (storedName !== '')) {
+        myHeading.textContent="Lets play, " + storedName + "!";
+    } else {
+        var myName;
+        while ((myName == null) || (myName == '')) {
+            myName = prompt('Please enter your name.');
+        }
+        localStorage.setItem('name', myName);
+        myHeading.textContent = "Let's play, " + myName + "!";
+        
+    }
     myHeading.style.visibility = 'visible'; 
     myButton.textContent = 'Change name';
     startButton.style.visibility = 'visible';
-
-    if(storedName === null) {
-        setUserName();
-    } else {
-        myHeading.textContent="Lets play, " + storedName + "!";
-    }
 }
-  
-  myButton.onclick = function() {
-    setUserName();
-  }
+
+window.onload = setUserName;
+
+function changeUserName(){
+    var myName = '';
+    while (myName == '') {
+        myName = prompt('Please enter your name.');
+        if (myName == null) return;
+    }
+    localStorage.setItem('name', myName);
+    myHeading.textContent = "Let's play, " + myName + "!";
+}
+
+myButton.onclick = function() {
+    changeUserName();
+}
 
 // show the game time to the user
 function showGameTime() {
@@ -96,11 +115,12 @@ function mixCards(){
 
 // start/restart to play 
 function startToPlay() {
-    if(gameOver === false) {                        
-       console.log(gameOver + " start to play");
-       cardGameField.style.visibility = 'visible'; // first time see the cardGameField 
-       startButton.textContent = 'Play Again';     // change the button's name 
-       reviewButton.style.visibility = 'visible';  // button review to show ++++++++++
+    if( (gameOver === false) && (firstClick) ) {                        
+        console.log(gameOver + " start to play");
+        cardGameField.style.visibility = 'visible'; // first time see the cardGameField 
+        startButton.textContent = 'Play Again';     // change the button's name 
+        reviewButton.style.visibility = 'visible';  // button review to show ++++++++++
+        similarButton.style.visibility = 'visible'
     } else {
         gameOver = false;                          
         console.log(2);
@@ -113,6 +133,10 @@ function startToPlay() {
         mixCards();
         timeDisplayCaption.innerHTML = ('0:0:0');
         firstClick = true;
+        // If the user restarts the game before it is over - stop the game timer 
+        if (TOTAL_COUPLES_COUNT > flippedCouplesCount) {
+            clearInterval(showGameTimeInterval);
+        }    
         flippedCouplesCount = 0;
     }
 } 
@@ -129,6 +153,42 @@ function checkReviewSecondClick(){
     }
     checkReviewSecondClickTimeout = null;
 }
+
+// finding and flipping the similar cards for 2 sec 
+
+function similarCard() {
+    var flippedCard = document.querySelectorAll('.flipped');
+    var unFlippedCard = document.querySelectorAll('div:not(.flipped)');
+    
+    var matchedCard = null; 
+    
+    if (flippedCard.length % 2 === 0){
+        console.log('only couples');
+        return;
+    }else{   
+        for(var i = 0; i < unFlippedCard.length; ++i){
+            for(var j = 0; j < flippedCard.length; ++j){
+                if (unFlippedCard[i].getAttribute('data-card') === flippedCard[j].getAttribute('data-card')){ //сравниваем элементы
+                    matchedCard = unFlippedCard[i];  
+                    console.log(matchedCard.getAttribute('data-card') + 'is un Flipped match Cards');
+                }
+            }
+        }
+    }    
+    // Verify that we found the matched card to the single flipped card
+    if (matchedCard == null) {
+        console.log('ERROR!!! MatchedCard is null!!!');
+        return;
+    }
+    matchedCard.classList.add('flipped');
+    setTimeout(function(){
+        matchedCard.classList.remove('flipped');
+    }, 2000);
+}
+
+similarButton.onclick = function() {
+    similarCard();
+} 
 
 //Review the cards
 
@@ -156,19 +216,19 @@ function reviewAllCards() {
         for (var i = 0; i < allCards.length; ++i) {   
             //add class flipped to allCards
             allCards[i].classList.add('flipped');
-            console.log(allCards[i]);
+            // console.log(allCards[i]);
         }
         firstClickOnReview = false;
         checkReviewSecondClickTimeout = setTimeout(checkReviewSecondClick, 3000);  // make sure to flip cards if the user did not in 3000 sec
     } else {
         reviewButton.textContent = 'Review';     // change the button's name  
-        firstClickOnReview = true;
         var flippedCard = document.querySelectorAll('.flipped');
+        var reversCard = document.querySelectorAll('.revers');
+        firstClickOnReview = true;
         // Cover all the cards
         for (var i = 0; i < flippedCard.length; ++i) {
             flippedCard[i].classList.remove('flipped');
         }
-        var reversCard = document.querySelectorAll('.revers');
 
         for (var i = 0; i < reversCard.length; ++i) {
             reversCard[i].classList.add('flipped');
